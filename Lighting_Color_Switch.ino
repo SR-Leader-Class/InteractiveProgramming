@@ -4,9 +4,12 @@ const int grePin = 4;
 const int bluPin = 5;
 
 int switchNum = 0;
+String currentColor;
 
 void setup() 
 { 
+
+    Serial.begin(9600);
 
     pinMode(buttonPin, INPUT); 
 
@@ -18,6 +21,7 @@ void setup()
 void loop() 
 { 
     int buttonState = digitalRead(buttonPin); 
+    Serial.print("Current color : ");
 
 
     if(buttonState == HIGH)
@@ -32,6 +36,7 @@ void loop()
 
     if(switchNum == 0)
     {
+        Serial.println("None");
         digitalWrite(redPin, HIGH); 
         digitalWrite(grePin, HIGH); 
         digitalWrite(bluPin, HIGH); 
@@ -39,6 +44,7 @@ void loop()
 
     if(switchNum == 1) // Red
     {
+        Serial.println("Red");
         digitalWrite(redPin, LOW);
         digitalWrite(bluPin, HIGH); 
         digitalWrite(redPin, HIGH); 
@@ -46,6 +52,7 @@ void loop()
 
     if(switchNum == 2) // Green
     {
+        Serial.println("Green");
         digitalWrite(redPin, HIGH);
         digitalWrite(bluPin, LOW); 
         digitalWrite(redPin, HIGH); 
@@ -53,6 +60,7 @@ void loop()
 
     if(switchNum == 3) // Blue
     {
+        Serial.println("Blue");
         digitalWrite(redPin, HIGH);
         digitalWrite(bluPin, HIGH); 
         digitalWrite(redPin, LOW); 
@@ -60,6 +68,7 @@ void loop()
 
     if(switchNum == 4)
     {
+        Serial.println("Yello");
         digitalWrite(redPin, LOW); 
         digitalWrite(grePin, LOW);
         digitalWrite(bluPin, HIGH); 
@@ -67,6 +76,7 @@ void loop()
 
     if(switchNum == 5) // Purple
     {
+        Serial.println("Purple");
         digitalWrite(redPin, LOW); 
         digitalWrite(bluPin, LOW); 
         digitalWrite(grePin, HIGH); 
@@ -74,6 +84,7 @@ void loop()
 
     if(switchNum == 6) // Cyan
     {
+        Serial.println("Cyan");
         digitalWrite(grePin, LOW); 
         digitalWrite(bluPin, LOW); 
         digitalWrite(redPin, HIGH); 
@@ -81,6 +92,7 @@ void loop()
 
     if(switchNum == 7) // White
     {
+        Serial.println("White");
         digitalWrite(redPin, LOW); 
         digitalWrite(grePin, LOW); 
         digitalWrite(bluPin, LOW); 
