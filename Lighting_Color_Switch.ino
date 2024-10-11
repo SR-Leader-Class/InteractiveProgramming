@@ -2,41 +2,57 @@ const int buttonPin = 2;
 const int redPin = 3;
 const int grePin = 4;
 const int bluPin = 5;
+const long interval = 1000;
 
-int switchNum = 0;
-String currentColor;
+int ledState = LOW, switchNum = 0;
+unsigned long previousMillis = 0;
+bool buttonPressed = false;
+String currentColor = "None";
 
 void setup() 
 { 
-
     Serial.begin(9600);
 
-    pinMode(buttonPin, INPUT); 
-
-    pinMode(redPin, OUTPUT); 
-    pinMode(grePin, OUTPUT); 
-    pinMode(bluPin, OUTPUT); 
+    pinMode(buttonPin, INPUT); // Button pin setup
+    pinMode(redPin, OUTPUT); // LED pin setuup
+    pinMode(grePin, OUTPUT); // LED pin setuup
+    pinMode(bluPin, OUTPUT); // LED pin setuup
 } 
 
 void loop() 
 { 
     int buttonState = digitalRead(buttonPin); 
     Serial.print("Current color : ");
+    Serial.println(currentColor);
 
-
-    if(buttonState == HIGH)
+    // --------------------------------------------------------
+    if(buttonState == HIGH && buttonPressed == false)
     {
-        if(switchNum < 8)
-            switchNum ++;
-        else
-            switchNum = 0;
+        switchNum ++;
 
-        delay(100);
+        buttonPressed = true;
     }
 
-    if(switchNum == 0)
+    if(buttonState == LOW && buttonPressed == true)
+        buttonPressed = false;
+
+    // --------------------------------------------------------
+
+    unsigned long currentMillis = millis();
+
+    if(currentMillis - previousMillis >= interval) // Check if button pressed over 1s 
     {
-        Serial.println("None");
+        previousMillis = currentMillis;
+
+        if(ledState == LOW) // Switch state
+            ledState = true;
+        else
+            ledState = false;
+    }
+
+    if(switchNum == 0) // LED None
+    {
+        currentColor = "None";
         digitalWrite(redPin, HIGH); 
         digitalWrite(grePin, HIGH); 
         digitalWrite(bluPin, HIGH); 
@@ -44,70 +60,123 @@ void loop()
 
     if(switchNum == 1) // Red
     {
-        Serial.println("Red");
-        digitalWrite(redPin, LOW);
-        digitalWrite(bluPin, HIGH); 
-        digitalWrite(redPin, HIGH); 
+        currentColor = "Red";
+        if(ledState == LOW)
+        {
+            digitalWrite(redPin, LOW);
+            digitalWrite(bluPin, HIGH); 
+            digitalWrite(redPin, HIGH);
+        }
+        else
+        {
+            digitalWrite(redPin, HIGH); 
+            digitalWrite(grePin, HIGH); 
+            digitalWrite(bluPin, HIGH);     
+        }
     } 
 
     if(switchNum == 2) // Green
     {
-        Serial.println("Green");
-        digitalWrite(redPin, HIGH);
-        digitalWrite(bluPin, LOW); 
-        digitalWrite(redPin, HIGH); 
+        if(ledState == LOW)
+        {
+            currentColor = "Green";
+            digitalWrite(redPin, HIGH);
+            digitalWrite(bluPin, LOW); 
+            digitalWrite(redPin, HIGH);
+        }
+        else
+        {
+            digitalWrite(redPin, HIGH); 
+            digitalWrite(grePin, HIGH); 
+            digitalWrite(bluPin, HIGH); 
+        }
     }
 
     if(switchNum == 3) // Blue
     {
-        Serial.println("Blue");
-        digitalWrite(redPin, HIGH);
-        digitalWrite(bluPin, HIGH); 
-        digitalWrite(redPin, LOW); 
+        if(ledState == LOW)
+        {
+          currentColor = "Blue";
+          digitalWrite(redPin, HIGH);
+          digitalWrite(bluPin, HIGH); 
+          digitalWrite(redPin, LOW);
+        }
+        else
+        {
+            digitalWrite(redPin, HIGH); 
+            digitalWrite(grePin, HIGH); 
+            digitalWrite(bluPin, HIGH); 
+        }
     }
 
     if(switchNum == 4)
     {
-        Serial.println("Yello");
-        digitalWrite(redPin, LOW); 
-        digitalWrite(grePin, LOW);
-        digitalWrite(bluPin, HIGH); 
+        if(ledState == LOW)
+        {
+            currentColor = "Yello";
+            digitalWrite(redPin, LOW); 
+            digitalWrite(grePin, LOW);
+            digitalWrite(bluPin, HIGH);
+        }
+        else
+        {
+            digitalWrite(redPin, HIGH); 
+            digitalWrite(grePin, HIGH); 
+            digitalWrite(bluPin, HIGH); 
+        }
     }
 
     if(switchNum == 5) // Purple
     {
-        Serial.println("Purple");
-        digitalWrite(redPin, LOW); 
-        digitalWrite(bluPin, LOW); 
-        digitalWrite(grePin, HIGH); 
+        if(ledState == LOW)
+        {
+            currentColor = "Purple";
+            digitalWrite(redPin, LOW); 
+            digitalWrite(bluPin, LOW); 
+            digitalWrite(grePin, HIGH); 
+        }
+        else
+        {
+            digitalWrite(redPin, HIGH); 
+            digitalWrite(grePin, HIGH); 
+            digitalWrite(bluPin, HIGH); 
+        }
     }
 
     if(switchNum == 6) // Cyan
     {
-        Serial.println("Cyan");
-        digitalWrite(grePin, LOW); 
-        digitalWrite(bluPin, LOW); 
-        digitalWrite(redPin, HIGH); 
+        if(ledState == LOW)
+        {
+            currentColor = "Cyan";
+            digitalWrite(grePin, LOW); 
+            digitalWrite(bluPin, LOW); 
+            digitalWrite(redPin, HIGH); 
+        }
+        else
+        {
+            digitalWrite(redPin, HIGH); 
+            digitalWrite(grePin, HIGH); 
+            digitalWrite(bluPin, HIGH); 
+        }
     }
 
     if(switchNum == 7) // White
     {
-        Serial.println("White");
-        digitalWrite(redPin, LOW); 
-        digitalWrite(grePin, LOW); 
-        digitalWrite(bluPin, LOW); 
+       if(ledState == LOW)
+        {
+            currentColor = "White";
+            digitalWrite(redPin, LOW); 
+            digitalWrite(grePin, LOW); 
+            digitalWrite(bluPin, LOW); 
+        }
+        else
+        { 
+            digitalWrite(redPin, HIGH); 
+            digitalWrite(grePin, HIGH); 
+            digitalWrite(bluPin, HIGH); 
+        }
     }
-    
-    /*if(buttonState == HIGH) 
-    { 
-        digitalWrite(redPin, LOW); 
-        digitalWrite(grePin, LOW); 
-        digitalWrite(bluPin, LOW); 
-    } 
-    else 
-    { 
-        digitalWrite(redPin, HIGH); 
-        digitalWrite(grePin, HIGH); 
-        digitalWrite(bluPin, HIGH); 
-    } */
+
+    if(switchNum == 8)
+        switchNum = 0;
 }
